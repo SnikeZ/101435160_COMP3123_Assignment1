@@ -7,14 +7,7 @@ exports.signup = async (req, res) => {
 
     const { username, email, password } = req.body;
 
-    console.log(`Username ${username}`)
-    console.log(`Email ${email}`)
-    console.log(`Password ${password}`)
-
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    console.log(`HashedPassword ${hashedPassword}`)
-
 
     const newUser = await userSchema.create({
       username: username,
