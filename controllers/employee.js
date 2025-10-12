@@ -27,7 +27,7 @@ exports.createEmployee = async (req, res) => {
         } = req.body
 
 
-        const employee = await userSchema.create({
+        const employee = await employeeSchema.create({
             first_name,
             last_name,
             email,
@@ -40,6 +40,25 @@ exports.createEmployee = async (req, res) => {
             message: "Employee created successfully.",
             employee_id: employee._id,
         });
+
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+}
+
+
+exports.getEmployee = async (req, res) => {
+    try {
+        const employeeId = req.params.eid
+        const employee = await employeeSchema.findById(employeeId);
+
+        if (!employee) {
+            return res.status(404).json({
+                message: "Employee not found"
+            })
+        }
+
+        res.status(200).json(employee);
 
     } catch (err) {
         res.status(500).json({ message: err.message })
