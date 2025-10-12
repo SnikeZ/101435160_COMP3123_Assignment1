@@ -1,9 +1,37 @@
 const bcrypt = require('bcryptjs');
 const userSchema = require('../models/user');
-const expressValidator = require('express-validator')
+const { body, validationResult } = require('express-validator');
+
+exports.signupValidator = [
+  body('username')
+    .trim()
+    .notEmpty()
+    .withMessage('Username is required')
+    .withMessage('Username must be at least 3 characters long'),
+
+  body('email')
+    .trim()
+    .notEmpty()
+    .withMessage('Email is required')
+    .isEmail()
+    .withMessage('Please provide a valid email address'),
+  body('password')
+    .notEmpty()
+    .withMessage('Password is required')
+    .isLength({ min: 6 })
+    .withMessage('Password must be at least 6 characters long')
+]
 
 exports.signup = async (req, res) => {
   try {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: "Validation failed",
+        errors: errors.array()
+      });
+    }
 
     const { username, email, password } = req.body;
 
