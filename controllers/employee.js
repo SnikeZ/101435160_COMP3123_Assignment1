@@ -80,3 +80,15 @@ exports.updateEmployee = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
+exports.deleteEmployee = async (req, res) => {
+    try {
+        const employeeId = req.query.eid
+        await employeeSchema.findByIdAndDelete(employeeId);
+
+        res.status(204).send();
+
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+}
