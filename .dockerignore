@@ -1,0 +1,10 @@
+node_modules
+npm-debug.log
+.env
+.git
+.gitignore
+*.md
+screenshots
+screenshots_combined.docx
+screenshots_combined.pdf
+.DS_Store
