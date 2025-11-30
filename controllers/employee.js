@@ -23,7 +23,8 @@ exports.createEmployee = async (req, res) => {
             position,
             salary,
             date_of_joining,
-            department
+            department,
+            avatar
         } = req.body
 
 
@@ -34,7 +35,8 @@ exports.createEmployee = async (req, res) => {
             position,
             salary,
             date_of_joining,
-            department
+            department,
+            avatar
         });
         res.status(201).json({
             message: "Employee created successfully.",
