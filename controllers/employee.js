@@ -13,6 +13,31 @@ exports.listEmployees = async (req, res) => {
     }
 }
 
+exports.searchEmployees = async (req, res) => {
+    try {
+        const { name, department } = req.query;
+
+        const query = {};
+
+        if (name) {
+            query.$or = [
+                { first_name: { $regex: name, $options: 'i' } },
+                { last_name: { $regex: name, $options: 'i' } }
+            ];
+        }
+
+        if (department) {
+            query.department = department;
+        }
+
+        const employees = await employeeSchema.find(query);
+        res.status(200).json(employees);
+
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+}
+
 exports.createEmployee = async (req, res) => {
     try {
 
