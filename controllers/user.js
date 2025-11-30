@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const userSchema = require('../models/user');
 const { body, validationResult } = require('express-validator');
 
@@ -72,8 +73,15 @@ exports.login = async (req, res) => {
 
     const passwordCorrect = await bcrypt.compare(password, user.password)
     if (passwordCorrect) {
+      const token = jwt.sign(
+        { userId: user._id, email: user.email, username: user.username },
+        process.env.JWT_SECRET || 'ebaldin',
+        { expiresIn: '24h' }
+      );
+
       return res.status(200).json({
-        message: "Login successful."
+        message: "Login successful.",
+        jwt_token: token
       })
     }
 
